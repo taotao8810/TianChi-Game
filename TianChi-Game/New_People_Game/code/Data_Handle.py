@@ -73,6 +73,7 @@ user_item['shoucang']= user_item['behavior_type'].apply(lambda y : f2(y))
 user_item['jiagou']= user_item['behavior_type'].apply(lambda y : f3(y))
 user_item['buy']= user_item['behavior_type'].apply(lambda y : f4(y))
 
+'''
 #切割训练集
 #2014.11.18-12.17 -->> 2014.12.18
 user_item_T_1 = user_item[user_item['time_1']<'2014-12-18']
@@ -81,7 +82,7 @@ user_item_T_2 = user_item[user_item['time_1']=='2014-12-18']
 #2014.11.19-12.18 -->> 2014.12.19
 test = user_item[user_item['time_1']<'2014-12-18']
 test = user_item[user_item['time_1']>'2014-11-18']
-
+'''
 
 #对数据做处理，根据user_id，item_id进行聚合，把liulan，shoucang，jiagou，求和。并删除其他不用的参数
 user_item_1 = user_item_T_1.groupby([user_item_T_1['user_id'],user_item_T_1['item_id']]).sum().reset_index()
