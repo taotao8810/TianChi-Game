@@ -5,19 +5,23 @@ Created on Tue Mar 13 15:16:19 2018
 @author: wentao.yao01
 """
 
-
+'''
 import os
 #获取当前工作目录
 os.getcwd()
 #修改当前目录
-os.chdir(r'E:\softwear\GitHub\taotao8810\TianChi-Game\New_People_Game\data\fresh_comp_offline')
-
+os.chdir(r'E:\softwear\GitHub\TianChi-Game\TianChi-Game\New_People_Game\data')
+'''
+import os
+#获取当前工作目录
+os.getcwd()
+#修改当前目录
+os.chdir(r'D:\GitHub\TianChi-Game\New_People_Game\data')
 
 import pandas as pd
 import numpy as np
 
 """
-#
 #用户在商品全集上的移动端行为数据
 train_item = pd.read_csv('tianchi_fresh_comp_train_item.csv')
 #商品子集   
@@ -26,7 +30,7 @@ train_user = pd.read_csv('tianchi_fresh_comp_train_user.csv')
 #根据P过滤掉D中的数据
 user_item=pd.merge(train_user,train_item,on=['item_id','item_category'])
 #导出文件，但是不包括索引
-user_item.to_csv(r'user_item.csv',index=False)
+user_item.to_csv(r'user_item-v2.csv',index=False)
 """
 
 file='user_item.csv'
@@ -72,6 +76,7 @@ user_item['liulan']= user_item['behavior_type'].apply(lambda y : f1(y))
 user_item['shoucang']= user_item['behavior_type'].apply(lambda y : f2(y))
 user_item['jiagou']= user_item['behavior_type'].apply(lambda y : f3(y))
 user_item['buy']= user_item['behavior_type'].apply(lambda y : f4(y))
+
 
 #切割训练集
 #2014.11.18-12.17 -->> 2014.12.18
