@@ -10,7 +10,7 @@ import os
 #获取当前工作目录
 os.getcwd()
 #修改当前目录
-os.chdir(r'E:\softwear\GitHub\taotao8810\TianChi-Game\New_People_Game\data\fresh_comp_offline')
+os.chdir(r'E:\softwear\GitHub\TianChi-Game\TianChi-Game\New_People_Game\data')
 """
 
 import pandas as pd
@@ -40,7 +40,7 @@ X_train, X_test, y_train, y_test = train_test_split(X_all, y_all, test_size=n, r
 
 #决策树分类器
 from sklearn.tree import DecisionTreeClassifier as DTC
-clf = DTC()
+clf = DTC(class_weight="balanced",max_depth=5,max_features=4)
 clf= clf.fit(X_train,y_train)
 
 #预测
