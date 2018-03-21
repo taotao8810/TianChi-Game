@@ -28,7 +28,7 @@ train_item = pd.read_csv('tianchi_fresh_comp_train_item.csv')
 train_user = pd.read_csv('tianchi_fresh_comp_train_user.csv')
 
 #根据P过滤掉D中的数据
-user_item=pd.merge(train_user,train_item,on=['item_id','item_category'])
+user_item=pd.merge(train_user,train_item,on=['item_id'])
 #导出文件，但是不包括索引
 user_item.to_csv(r'user_item-v2.csv',index=False)
 """
