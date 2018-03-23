@@ -45,7 +45,7 @@ from sklearn.tree import DecisionTreeClassifier as DTC
 clf = DTC(class_weight="balanced",max_depth=5,max_features=4)
 clf= clf.fit(X_train,y_train)
 
-#预测
+#预测 f1:0.324896284902
 test_predictions=clf.predict(X_test)
 print("测试集准确率:  %s " % f1_score(y_test, test_predictions))
 
@@ -71,7 +71,7 @@ from sklearn.tree import DecisionTreeClassifier as DTC
 from sklearn.grid_search import GridSearchCV
 from sklearn.model_selection import StratifiedKFold
 decision_tree_classifier = DTC()
-parameter_grid = {'max_depth':[1,2,3,4,5],'max_features':[1,2,3,4]}
+parameter_grid = {'max_depth':[1,2,3,4,5,6,7,8],'max_features':[1,2,3,4,5,6,7]}
 cross_validation = StratifiedKFold(n_splits = 10)
 
 #将不同参数带入
@@ -88,7 +88,7 @@ best_decision_tree_classifier = DTC(max_depth=best_param['max_depth'],max_featur
 
 
 #模型评估
-#计算ROC曲线下面的面积，也被称为AUC或AUROC
+#计算ROC曲线下面的面积，也被称为AUC或AUROC auc:0.87690039152801569
 from sklearn.metrics import roc_auc_score
 roc_auc_score(y_test, test_predictions)
 
@@ -103,7 +103,19 @@ plt.xlim(0,1.05) #边界范围
 plt.legend(loc=4) #图例
 plt.show() #显示作图结果
 
-        
+'''
+PredictionSet 为算法预测的购买数据集合
+ReferenceSet 为真实的答案购买数据集合
+'''
+PredictionSet = len(test_predictions)
+ReferenceSet = len(y_test)
+X_test['flag']=test_predictions
+tp=len(X_test[X_test['flag']==1])
+
+precision = tp / predictedSetCount
+recall = tp / referenceSetCount
+
+f_score = 2 * precision * recall / (precision + recall)
 
 #预测最后的结果
 data_handle_test_1 = data_handle_test.drop(['user_id','item_id','buy'],axis=1)
