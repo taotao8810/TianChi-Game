@@ -112,8 +112,8 @@ ReferenceSet = len(y_test)
 X_test['flag']=test_predictions
 tp=len(X_test[X_test['flag']==1])
 
-precision = tp / predictedSetCount
-recall = tp / referenceSetCount
+precision = tp / PredictionSet
+recall = tp / ReferenceSet
 
 f_score = 2 * precision * recall / (precision + recall)
 
