@@ -4,7 +4,6 @@ Created on Fri Feb 02 10:38:16 2018
 
 @author: wentao.yao01
 此版本是由2014.11.18-12.17 -->> 2014.12.18
-目前效果不理想
 """
 
 """
@@ -40,7 +39,7 @@ np.isnan(X_train).any()
 
 #决策树分类器
 from sklearn.tree import DecisionTreeClassifier as DTC
-clf = DTC()
+clf = DTC(class_weight="balanced",max_depth=8,max_features=2)
 clf= clf.fit(X_train,y_train)
 
 #预测
@@ -50,7 +49,7 @@ print("测试集准确率:  %s " % f1_score(y_test, test_predictions))
 
 #随机森林分类器
 from sklearn.ensemble import RandomForestClassifier,ExtraTreesClassifier
-clf=RandomForestClassifier()
+clf=RandomForestClassifier(class_weight="balanced",max_depth=5,max_features=4)
 clf=clf.fit(X_train,y_train)
 #预测
 test_predictions=clf.predict(X_test)
@@ -61,6 +60,26 @@ clf=ExtraTreesClassifier()
 clf=clf.fit(X_train,y_train)
 test_predictions=clf.predict(X_test)
 print("测试集准确率:  %s " % f1_score(y_test, test_predictions))
+
+
+
+#设置待选的参数
+from sklearn.tree import DecisionTreeClassifier as DTC
+from sklearn.grid_search import GridSearchCV
+from sklearn.model_selection import StratifiedKFold
+decision_tree_classifier = DTC()
+parameter_grid = {'max_depth':[1,2,3,4,5,6,7,8],'max_features':[1,2,3,4,5,6,7]}
+cross_validation = StratifiedKFold(n_splits = 20)
+
+#将不同参数带入
+gridsearch = GridSearchCV(decision_tree_classifier,
+                          param_grid = parameter_grid,
+                          cv = 20)
+gridsearch.fit(X_train,y_train)
+
+#得分最高的参数值，并构建最佳的决策树
+best_param = gridsearch.best_params_
+best_decision_tree_classifier = DTC(max_depth=best_param['max_depth'],max_features=best_param['max_features'])
 
 
 
