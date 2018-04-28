@@ -72,6 +72,7 @@ data_handle_test.sort_values(by=['buy','flag'],inplace=True)
 
 result.to_csv("result-v5.csv",index=None)
 
+
 #计算ROC曲线下面的面积，也被称为AUC或AUROC
 from sklearn.metrics import roc_auc_score
 roc_auc_score(data_handle_test['buy'], data_handle_test['flag'])
