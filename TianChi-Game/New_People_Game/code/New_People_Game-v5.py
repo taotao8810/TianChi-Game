@@ -25,7 +25,7 @@ import matplotlib.pyplot as plt
 #导入处理完的数据
 data_handle_trina = pd.read_csv('data_handle_trina.csv')
 data_handle_test = pd.read_csv('data_handle_test.csv')
-
+data_handle_test_1 = data_handle_test.drop(['user_id','item_id','buy'],axis=1)
 
 X_all=data_handle_trina.drop(['buy','user_id','item_id'],axis=1)
 y_all=data_handle_trina['buy']
@@ -46,24 +46,23 @@ xgb_val = xgb.DMatrix(X_test,label=y_test)
 xgb_train = xgb.DMatrix(X_train, label=y_train)
 xgb_test = xgb.DMatrix(data_handle_test_1)
 
-
+#'eval_metric':'merror',
 param = {'max_depth':5,
          'eta':0.02,
          'silent':0,
          'booster':'gbtree',
 	      'objective': 'rank:pairwise',
-         'eval_metric':'auc',
          'lambda':3,
          'colsample_bytree':0.9}
 
-num_round = 200
+num_round = 100
 watchlist = [(xgb_train, 'train'),(xgb_val, 'val')]
 model = xgb.train(param, xgb_train, num_round, watchlist)
 
 # 计算 auc 分数、预测
 #test_predictions = model.predict(xgb_test)
 data_handle_test['flag'] = model.predict(xgb_test)
-result = data_handle_test[data_handle_test['flag']>0]
+result = data_handle_test[data_handle_test['flag']>0.5]
 result = result[['user_id','item_id']]
 
 from sklearn.preprocessing import MinMaxScaler
@@ -73,70 +72,6 @@ data_handle_test.sort_values(by=['buy','flag'],inplace=True)
 result.to_csv("result-v5.csv",index=None)
 
 
-<<<<<<< HEAD
-=======
-#==============================================================================
-# 
-# #决策树分类器
-# from sklearn.tree import DecisionTreeClassifier as DTC
-# clf = DTC(class_weight="balanced",max_depth=8,max_features=2)
-# clf= clf.fit(X_train,y_train)
-# 
-# #预测
-# test_predictions=clf.predict(X_test)
-# print("测试集准确率:  %s " % f1_score(y_test, test_predictions))
-# 
-# 
-# #随机森林分类器
-# from sklearn.ensemble import RandomForestClassifier,ExtraTreesClassifier
-# clf=RandomForestClassifier(class_weight="balanced",max_depth=5,max_features=4)
-# clf=clf.fit(X_train,y_train)
-# #预测
-# test_predictions=clf.predict(X_test)
-# print("测试集准确率:  %s " % f1_score(y_test, test_predictions))
-# 
-# 
-# clf=ExtraTreesClassifier()
-# clf=clf.fit(X_train,y_train)
-# test_predictions=clf.predict(X_test)
-# print("测试集准确率:  %s " % f1_score(y_test, test_predictions))
-# 
-# 
-# 
-# #设置待选的参数
-# from sklearn.tree import DecisionTreeClassifier as DTC
-# from sklearn.grid_search import GridSearchCV
-# from sklearn.model_selection import StratifiedKFold
-# decision_tree_classifier = DTC()
-# parameter_grid = {'max_depth':[1,2,3,4,5,6,7,8],'max_features':[1,2,3,4,5,6,7]}
-# cross_validation = StratifiedKFold(n_splits = 20)
-# 
-# #将不同参数带入
-# gridsearch = GridSearchCV(decision_tree_classifier,
-#                           param_grid = parameter_grid,
-#                           cv = 20)
-# gridsearch.fit(X_train,y_train)
-# 
-# #得分最高的参数值，并构建最佳的决策树
-# best_param = gridsearch.best_params_
-# best_decision_tree_classifier = DTC(max_depth=best_param['max_depth'],max_features=best_param['max_features'])
-# 
-# 
-# 
-# 
-# #预测最后的结果
-# data_handle_test_1 = data_handle_test.drop(['user_id','item_id','buy'],axis=1)
-# a = clf.predict(data_handle_test_1)
-# 
-# data_handle_test_1['flag']=a
-# result = data_handle_test_1[data_handle_test_1['flag'] >0]
-# 
-# #导出结果数据
-# result.to_csv(r'result-v2.csv',index=False)
-# 
-#==============================================================================
-
->>>>>>> 1d5d1307896f84763838480c925f90a9226a3dcb
 #计算ROC曲线下面的面积，也被称为AUC或AUROC
 from sklearn.metrics import roc_auc_score
 roc_auc_score(data_handle_test['buy'], data_handle_test['flag'])
