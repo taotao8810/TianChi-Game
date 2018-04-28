@@ -11,7 +11,7 @@ import os
 #获取当前工作目录
 os.getcwd()
 #修改当前目录
-os.chdir(r'E:\softwear\GitHub\taotao8810\TianChi-Game\New_People_Game\data\fresh_comp_offline')
+os.chdir(r'E:\softwear\GitHub\TianChi-Game\TianChi-Game\New_People_Game\data')
 """
 
 import pandas as pd
@@ -97,11 +97,11 @@ result.to_csv(r'result-v2.csv',index=False)
 
 #计算ROC曲线下面的面积，也被称为AUC或AUROC
 from sklearn.metrics import roc_auc_score
-roc_auc_score(y_test, test_predictions)
+roc_auc_score(data_handle_test['buy'], data_handle_test_1['flag'])
 
 #画出ROC曲线图
 from sklearn.metrics import roc_curve #导入ROC曲线函数
-fpr, tpr, thresholds = roc_curve(y_test, test_predictions, pos_label=1)
+fpr, tpr, thresholds = roc_curve(data_handle_test['buy'], data_handle_test_1['flag'], pos_label=1)
 plt.plot(fpr, tpr, linewidth=2, label = 'ROC of CART', color = 'green') #作出ROC曲线
 plt.xlabel('False Positive Rate') #坐标轴标签
 plt.ylabel('True Positive Rate') #坐标轴标签
