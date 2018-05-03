@@ -8,13 +8,13 @@ Created on Fri Feb 02 10:38:16 2018
 xgboost
 """
 
-"""
+
 import os
 #获取当前工作目录
 os.getcwd()
 #修改当前目录
 os.chdir(r'E:\softwear\GitHub\TianChi-Game\TianChi-Game\New_People_Game\data')
-"""
+
 
 import pandas as pd
 import numpy as np
@@ -46,18 +46,23 @@ xgb_val = xgb.DMatrix(X_test,label=y_test)
 xgb_train = xgb.DMatrix(X_train, label=y_train)
 xgb_test = xgb.DMatrix(data_handle_test_1)
 
-#'eval_metric':'merror',
+#'eval_metric':'merror','lambda':3,
 param = {'max_depth':5,
+         'min_child_weight':1,
          'eta':0.02,
          'silent':0,
          'booster':'gbtree',
-	      'objective': 'rank:pairwise',
-         'lambda':3,
-         'colsample_bytree':0.9}
+	      'objective': 'binary:logistic',
+         'gamma':0,
+         'subsample':0.85,
+         'colsample_bytree':0.8,
+         'colsample_bylevel':1,
+         'scale_pos_weight':1,
+         'seed':10}
 
 num_round = 100
-watchlist = [(xgb_train, 'train'),(xgb_val, 'val')]
-model = xgb.train(param, xgb_train, num_round, watchlist)
+#watchlist = [(xgb_train, 'train'),(xgb_val, 'val')]
+model = xgb.train(param, xgb_train, num_round)#, watchlist)
 
 # 计算 auc 分数、预测
 #test_predictions = model.predict(xgb_test)
